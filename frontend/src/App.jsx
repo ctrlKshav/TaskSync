@@ -1,5 +1,5 @@
 import React from "react"
-import {BrowserRouter,Routes,Route,Navigate} from 'react-router-dom'
+import {BrowserRouter,Routes,Route,RouteProvider,Navigate,createRoutesFromElements} from 'react-router-dom'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Home from './pages/Home'
@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 // import MainLayout from "./layouts/MainLayout";
 // import AddNotePage from "./pages/AddNotePage";
 // import EditNotePage from "./pages/EditNotePage";
-// import HomePage from "./pages/HomePage";
+import HomePage from "./pages/HomePage";
 // import NoteDetailPage from "./pages/NoteDetailPage";
 
 import axios from "axios";
@@ -113,26 +113,18 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* <Route path="/add-note" 
-          element={<AddNotePage addNote={addNote} />} />
-
-        <Route
-          path="/edit-note/:slug"
-          element={<EditNotePage updateNote={updateNote} />}
-        />
-        <Route
-          path="/notes/:slug"
-          element={<NoteDetailPage deleteNote={deleteNote} />}
-        /> */}
+      <Route
+         path="/"
+         element={
+           <ProtectedRoute>
+            <HomePage
+              notes={filteredNotes}
+              
+              handleFilterText={handleFilterText}
+            />
+           </ProtectedRoute>
+         }
+       />
 
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
