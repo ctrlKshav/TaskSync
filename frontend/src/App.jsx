@@ -1,5 +1,5 @@
 import React from "react"
-import {BrowserRouter,Routes,Route,RouteProvider,Navigate,createRoutesFromElements} from 'react-router-dom'
+import {BrowserRouter,Routes,Route,RouterProvider,createBrowserRouter ,Navigate,createRoutesFromElements} from 'react-router-dom'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Home from './pages/Home'
@@ -8,14 +8,15 @@ import ProtectedRoute from './components/ProtectedRoute'
 
 
 import { useState, useEffect } from "react";
-// import MainLayout from "./layouts/MainLayout";
-// import AddNotePage from "./pages/AddNotePage";
-// import EditNotePage from "./pages/EditNotePage";
+import MainLayout from "./layouts/MainLayout";
+import AddNotePage from "./pages/AddNotePage";
+import EditNotePage from "./pages/EditNotePage";
 import HomePage from "./pages/HomePage";
-// import NoteDetailPage from "./pages/NoteDetailPage";
+import NoteDetailPage from "./pages/NoteDetailPage";
 
 import axios from "axios";
 import { toast } from "react-toastify";
+import api from "./api"
 
 
 function Logout(){
@@ -53,7 +54,7 @@ function App() {
 
   useEffect(() => {
     if(searchText.length < 3) return;
-    axios.get(`http://127.0.0.1:8008/notes-search/?search=${searchText}`)
+    api.get(`/api/notes-search/?search=${searchText}`)
     .then(res => {
       console.log(res.data)
       setNotes(res.data)
@@ -63,8 +64,8 @@ function App() {
 
   useEffect(() => {
     setIsLoading(true);
-    axios
-      .get("http://127.0.0.1:8008/notes/")
+    api
+      .get("/api/notes/")
       .then((res) => {
         // console.log(res.data);
         setNotes(res.data);
@@ -76,8 +77,8 @@ function App() {
   }, []);
 
   const addNote = (data) => {
-    axios
-      .post("http://127.0.0.1:8008/notes/", data)
+    api
+      .post("/api/notes", data)
       .then((res) => {
         setNotes([...notes, data]);
         toast.success("A new note has been added");
@@ -91,7 +92,7 @@ function App() {
 
   const updateNote = (data, slug) => {
     axios
-      .put(`http://127.0.0.1:8008/notes/${slug}/`, data)
+      .put(`http://127.0.0.1:8000/notes/${slug}/`, data)
       .then((res) => {
         console.log(res.data);
         toast.success("Note updated succesfully");
@@ -102,7 +103,7 @@ function App() {
 
   const deleteNote = (slug) => {
     axios
-      .delete(`http://127.0.0.1:8008/notes/${slug}`)
+      .delete(`http://127.0.0.1:8000/notes/${slug}`)
       .catch((err) => console.log(err.message));
   };
 
@@ -110,29 +111,52 @@ function App() {
 
 
 
-  return (
-    <BrowserRouter>
-      <Routes>
-      <Route
-         path="/"
-         element={
-           <ProtectedRoute>
-            <HomePage
-              notes={filteredNotes}
-              
-              handleFilterText={handleFilterText}
-            />
-           </ProtectedRoute>
-         }
-       />
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/logout" element={<Logout />} />
-        <Route path="/register" element={<RegisterAndLogout />} />
-        <Route path="*" element={<NotFound />}></Route>
-      </Routes>
-    </BrowserRouter>
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route>
+    <Route
+      path="/"
+      element={
+        <MainLayout
+          searchText={searchText}
+          handelSearchText={handelSearchText}
+        />
+      }
+    >
+      <Route
+        index
+        element={
+          <HomePage
+            notes={filteredNotes}
+            
+            handleFilterText={handleFilterText}
+          />
+        }
+      />
+      <Route path="/add-note" element={<AddNotePage addNote={addNote} />} />
+      <Route
+        path="/edit-note/:slug"
+        element={<EditNotePage updateNote={updateNote} />}
+      />
+      <Route
+        path="/notes/:slug"
+        element={<NoteDetailPage deleteNote={deleteNote} />}
+      />
+      
+    </Route>
+     <Route path="/login" element={<Login />} />
+     <Route path="/logout" element={<Logout />} />
+     <Route path="/register" element={<RegisterAndLogout />} />
+     <Route path="*" element={<NotFound />}/>
+     </Route>
+
+    
   )
+);
+
+return <RouterProvider router={router} />;
 }
 
 export default App
