@@ -5,6 +5,11 @@ from rest_framework.permissions import  IsAuthenticated,AllowAny
 from .serializers import UserSerializer,NoteSerializer
 from .models import Note
 
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from django.db.models import Q
+from rest_framework import status
+
 # Create your views here.
 
 class CreateUserView(generics.CreateAPIView):
@@ -33,3 +38,34 @@ class NoteDelete(generics.DestroyAPIView):
     def get_queryset(self):
         user=self.request.user
         return Note.objects.filter(author=user)
+    
+    
+
+@api_view(['GET'])
+def search_notes(request):
+    query = request.query_params.get("search")
+    notes = Note.objects.filter(Q(title__icontains=query) | Q(body__icontains=query) | Q(category__icontains=query))
+    serializer = NoteSerializer(notes, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def note_detail(request, slug):
+    try:
+        note = Note.objects.get(slug=slug)
+    except Note.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = NoteSerializer(note)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = NoteSerializer(note, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    elif request.method == 'DELETE':
+        note.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
