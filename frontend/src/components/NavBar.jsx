@@ -7,7 +7,7 @@ const NavBar = ({searchText, handelSearchText}) => {
     <nav className="navbar bg-body-tertiary py-50" style={{ padding: "20px" }}>
       <div className="container d-flex justify-content-around">
         <Link className="navbar-brand" to="/">
-          <h4 style={{ fontWeight: "bold" }}>Notey</h4>
+          <h4 style={{ fontWeight: "bold" }} onClick={(e)=>handelSearchText("")}>TaskSync</h4>
         </Link>
         <div className="d-flex">
           <div
@@ -20,7 +20,7 @@ const NavBar = ({searchText, handelSearchText}) => {
               value={searchText}
               onChange={(e) => handelSearchText(e.target.value)}
             />
-            <button className="btn btn-outline-success" type="submit">
+            <button className="btn btn-outline-success" type="submit" >
               Search
             </button>
           </div>

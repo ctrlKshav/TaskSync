@@ -5,7 +5,7 @@ import { ACCESS_TOKEN,REFRESH_TOKEN } from "../constants";
 import LoadingIndicator from "./LoadingIndicator";
 import "../styles/Form.css"
 
-function Form({route,method}){
+function Form({route,method,setShouldRefetch}){
     const [username,setUsername] = useState('')
     const [password,setPassword] = useState('')
     const [loading,setLoading] = useState(false)
@@ -22,6 +22,17 @@ function Form({route,method}){
             if (method === "login") {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
                 localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+                api
+                .get("/api/notes/")
+                .then((res) => {
+                    // console.log(res.data);
+                    setNotes(res.data);
+                    setIsLoading(false);
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                });
+                setShouldRefetch(prev => !prev)
                 navigate("/")
             } else {
                 navigate("/login")

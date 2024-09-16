@@ -30,9 +30,10 @@ function RegisterAndLogout(){
 }
 function App() {
   const [notes, setNotes] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  
   const [searchText, setSearchText] = useState("");
   const [filterText, setFilterText] = useState("");
+  const [shouldRefetch,setShouldRefetch] = useState(false)
 
   const handleFilterText = (val) => {
     setFilterText(val);
@@ -53,7 +54,10 @@ function App() {
 
 
   useEffect(() => {
-    if(searchText.length < 3) return;
+    if(searchText.length < 3) {
+      
+      setShouldRefetch((prev)=>!prev)
+      return;}
     api.get(`/api/notes-search/?search=${searchText}`)
     .then(res => {
       console.log(res.data)
@@ -63,24 +67,14 @@ function App() {
   }, [searchText])
 
   useEffect(() => {
-    setIsLoading(true);
-    api
-      .get("/api/notes/")
-      .then((res) => {
-        // console.log(res.data);
-        setNotes(res.data);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
+    getNotes()
+  }, [shouldRefetch]);
 
   const addNote = (data) => {
     api
-      .post("/api/notes", data)
+      .post("/api/notes/", data)
       .then((res) => {
-        setNotes([...notes, data]);
+        setNotes([...notes, res.data]);
         toast.success("A new note has been added");
         console.log(res.data);
       })
@@ -89,21 +83,34 @@ function App() {
         console.log(console.log(err.message));
       });
   };
+  const getNotes = () => {
+    api
+      .get("/api/notes/")
+      .then((res) => {
+        // console.log(res.data);
+        setNotes(res.data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
 
   const updateNote = (data, slug) => {
-    axios
-      .put(`http://127.0.0.1:8000/notes/${slug}/`, data)
+    api
+      .put(`/api/notes/${slug}/`, data)
       .then((res) => {
         console.log(res.data);
         toast.success("Note updated succesfully");
+        setShouldRefetch(prev=>!prev)
       })
 
       .catch((err) => console.log(err.message));
   };
 
   const deleteNote = (slug) => {
-    axios
-      .delete(`http://127.0.0.1:8000/notes/${slug}`)
+    api
+      .delete(`/api/notes/${slug}/`)
+      .then(()=>getNotes())
       .catch((err) => console.log(err.message));
   };
 
@@ -122,17 +129,20 @@ const router = createBrowserRouter(
         <MainLayout
           searchText={searchText}
           handelSearchText={handelSearchText}
+            
         />
       }
     >
       <Route
         index
         element={
+          <ProtectedRoute>
           <HomePage
             notes={filteredNotes}
             
             handleFilterText={handleFilterText}
           />
+          </ProtectedRoute>
         }
       />
       <Route path="/add-note" element={<AddNotePage addNote={addNote} />} />
@@ -146,7 +156,7 @@ const router = createBrowserRouter(
       />
       
     </Route>
-     <Route path="/login" element={<Login />} />
+     <Route path="/login" element={<Login refetch={setShouldRefetch}/>}  />
      <Route path="/logout" element={<Logout />} />
      <Route path="/register" element={<RegisterAndLogout />} />
      <Route path="*" element={<NotFound />}/>

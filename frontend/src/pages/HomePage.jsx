@@ -9,9 +9,8 @@ const HomePage = ({ notes, loading, handleFilterText }) => {
         <h4 style={{ textAlign: "center", marginTop: "10px" }}>
           There is no note found with the search phrase above
         </h4>
-      ) : (
+      ) :(false)}
         <Filter handleFilterText={handleFilterText} />
-      )}
       <NoteCardContainer notes={notes} loading={loading} />
     </>
   );
