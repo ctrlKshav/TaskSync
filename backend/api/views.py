@@ -31,6 +31,21 @@ class NoteListCreate(generics.ListCreateAPIView):
         else:
             print(serializer.errors)
 
+# @api_view(["GET", "POST"])
+# def notes(request):
+#     if request.method == "GET":
+#         notes = Note.objects.all()
+#         serializer = NoteSerializer(notes, many=True)
+#         return Response(serializer.data)
+    
+#     elif request.method == 'POST':
+#         serializer = NoteSerializer(data=request.data,author=request.user)
+#         if serializer.is_valid():   
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class NoteDelete(generics.DestroyAPIView):
     serializer_class=NoteSerializer
     permission_classes=[IsAuthenticated]
@@ -44,14 +59,14 @@ class NoteDelete(generics.DestroyAPIView):
 @api_view(['GET'])
 def search_notes(request):
     query = request.query_params.get("search")
-    notes = Note.objects.filter(Q(title__icontains=query) | Q(body__icontains=query) | Q(category__icontains=query))
+    notes = Note.objects.filter((Q(title__icontains=query) | Q(body__icontains=query) | Q(category__icontains=query)), author=request.user)
     serializer = NoteSerializer(notes, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def note_detail(request, slug):
+def note_detail(request, slug): 
     try:
-        note = Note.objects.get(slug=slug)
+        note = Note.objects.get(slug=slug,author=request.user)
     except Note.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
