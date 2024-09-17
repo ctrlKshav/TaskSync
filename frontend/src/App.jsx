@@ -14,10 +14,13 @@ import EditNotePage from "./pages/EditNotePage";
 import HomePage from "./pages/HomePage";
 import NoteDetailPage from "./pages/NoteDetailPage";
 
+import Board from "./components/Board"
+
 import axios from "axios";
 import { toast } from "react-toastify";
 import api from "./api"
-
+import Sidebar from "./components/Sidebar"
+import Tasks from "./pages/Tasks"
 
 function Logout(){
   localStorage.clear()
@@ -159,16 +162,21 @@ const router = createBrowserRouter(
      <Route path="/login" element={<Login refetch={setShouldRefetch}/>}  />
      <Route path="/logout" element={<Logout />} />
      <Route path="/register" element={<RegisterAndLogout />} />
+     <Route path="/task" element={<Tasks />} />
      <Route path="*" element={<NotFound />}/>
+
      </Route>
 
     
   )
 );
 
-return <RouterProvider router={router} />;
+return <>
+ 
+            <RouterProvider router={router} />
+</>
 }
 
 export default App
-
+  
 

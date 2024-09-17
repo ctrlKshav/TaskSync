@@ -1,6 +1,6 @@
 ﻿from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Note
+from .models import Note,Task
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,4 +18,11 @@ class NoteSerializer(serializers.ModelSerializer):
         fields = ["id", "title", "body",'author', "slug", "category", "created", "updated"]
 
         extra_kwargs = {'author' : {'read_only':True}}
+        
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ["id","title","author","category","created","catId"]
+        extra_kwargs = {'author' : {'read_only':True} }
+        
         

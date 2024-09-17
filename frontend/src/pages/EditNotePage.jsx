@@ -35,6 +35,7 @@ const EditNotePage = ({updateNote}) => {
     e.preventDefault()
 
     if(!title && !body && !category) return;
+    
     updateNote(updateNoteObject, slug)
     navigate(`/notes/${slug}`)
   }
