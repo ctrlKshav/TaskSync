@@ -3,15 +3,17 @@ import { DragDropContext } from "@hello-pangea/dnd";
 import Column from "./Column";
 import api from '../api'
 import { createGlobalStyle } from "styled-components";
-export default function Board() {
+export default function Board({taskRefetch}) {
     const [completed, setCompleted] = useState([]);
     const [incomplete, setIncomplete] = useState([]);
     const [backlog, setBacklog] = useState([]);
     const [inReview, setInReview] = useState([]);
+    const [tasks, setTasks] = useState([]);
+
 
     useEffect(() => {
         getTasks()
-    }, []);
+    }, [taskRefetch]);
 
     const getTasks = () => {
         api
@@ -22,6 +24,7 @@ export default function Board() {
             setIncomplete(json.filter((task) => task.category === "incomplete"));
             setBacklog(json.filter((task) => task.category === "backlog"));
             setInReview(json.filter((task) => task.category === "inreview"));
+            setTasks(response.data)
         })
         .catch((err)=>console.log(err))
 
@@ -51,9 +54,9 @@ export default function Board() {
     };
     
     const updateTasks = (pk,data) => {
-        console.log(data)
+        // console.log(data)
         let updatedTask={id:data.id,title:data.title,category:data.category}
-        console.log(updatedTask)
+        // console.log(updatedTask)
         api
             .put(`/api/tasks/update/${pk}/`,updatedTask)
             .then(()=>{getTasks()})

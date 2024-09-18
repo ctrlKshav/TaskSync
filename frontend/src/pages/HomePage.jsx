@@ -1,6 +1,6 @@
 import React from "react";
 import Filter from "../components/Filter";
-import NoteCardContainer from "../components/NoteCardContainer";
+import NoteCardContainer from "../components/TaskCardContainer";
 
 const HomePage = ({ notes, loading, handleFilterText }) => {
   return (

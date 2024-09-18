@@ -20,7 +20,9 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import api from "./api"
 import Sidebar from "./components/Sidebar"
+
 import Tasks from "./pages/Tasks"
+import AddTaskPage from "./pages/AddTaskPage"
 
 function Logout(){
   localStorage.clear()
@@ -33,10 +35,12 @@ function RegisterAndLogout(){
 }
 function App() {
   const [notes, setNotes] = useState([]);
+
   
   const [searchText, setSearchText] = useState("");
   const [filterText, setFilterText] = useState("");
   const [shouldRefetch,setShouldRefetch] = useState(false)
+  const [taskRefetch,setTaskRefetch] = useState(false)
 
   const handleFilterText = (val) => {
     setFilterText(val);
@@ -117,6 +121,35 @@ function App() {
       .catch((err) => console.log(err.message));
   };
 
+  const getTasks = () => {
+    api
+    .get("/api/tasks/")
+    .then((response) => {
+        let json=response.data
+        setCompleted(json.filter((task) => task.category === "completed"));
+        setIncomplete(json.filter((task) => task.category === "incomplete"));
+        setBacklog(json.filter((task) => task.category === "backlog"));
+        setInReview(json.filter((task) => task.category === "inreview"));
+    })
+    .catch((err)=>console.log(err))
+  }
+
+  const addTask = (data) => {
+    api
+      .post("/api/tasks/", data)
+      .then((res) => {
+        // setNotes([...notes, res.data]);
+        // toast.success("A new Task has been added");
+        console.log(res.data);
+        setTaskRefetch((prev)=>!prev)
+      })
+
+      .catch((err) => {
+        console.log(console.log(err.message));
+      });
+
+  }
+
 
 
 
@@ -162,8 +195,13 @@ const router = createBrowserRouter(
      <Route path="/login" element={<Login refetch={setShouldRefetch}/>}  />
      <Route path="/logout" element={<Logout />} />
      <Route path="/register" element={<RegisterAndLogout />} />
-     <Route path="/task" element={<Tasks />} />
+
+     <Route path="/task" element={<Tasks taskRefetch={taskRefetch}/>} />
+     <Route path="/add-task" element = {<AddTaskPage addTask={addTask}/>} />
+     {/* <Route path='/tasks/:pk' element={}/> */}
+     
      <Route path="*" element={<NotFound />}/>
+    
 
      </Route>
 
