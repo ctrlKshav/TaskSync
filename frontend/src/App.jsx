@@ -94,8 +94,9 @@ function App() {
     api
       .get("/api/notes/")
       .then((res) => {
-        // console.log(res.data);
+        console.log(res.data);
         setNotes(res.data);
+        console.log(notes)
       })
       .catch((err) => {
         console.log(err.message);
@@ -121,18 +122,7 @@ function App() {
       .catch((err) => console.log(err.message));
   };
 
-  const getTasks = () => {
-    api
-    .get("/api/tasks/")
-    .then((response) => {
-        let json=response.data
-        setCompleted(json.filter((task) => task.category === "completed"));
-        setIncomplete(json.filter((task) => task.category === "incomplete"));
-        setBacklog(json.filter((task) => task.category === "backlog"));
-        setInReview(json.filter((task) => task.category === "inreview"));
-    })
-    .catch((err)=>console.log(err))
-  }
+ 
 
   const addTask = (data) => {
     api

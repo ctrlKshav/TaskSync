@@ -26,7 +26,7 @@ function Form({route,method,setShouldRefetch}){
                 .get("/api/notes/")
                 .then((res) => {
                     // console.log(res.data);
-                    setNotes(res.data);
+                    // setNotes(res.data);
                     setIsLoading(false);
                 })
                 .catch((err) => {
