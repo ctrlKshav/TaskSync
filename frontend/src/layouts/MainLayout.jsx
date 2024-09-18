@@ -1,9 +1,10 @@
 import React from 'react'
-import NavBar from '../components/NavBar'
+import NavBar from '../components/SearchBar'
 import { Outlet } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import Sidebar from '../components/Sidebar';
+import SearchBar from '../components/SearchBar'
 
 const MainLayout = ({searchText, handelSearchText}) => {
   return (
@@ -11,7 +12,7 @@ const MainLayout = ({searchText, handelSearchText}) => {
     <div className="d-flex flex-column ">
       
       <div>
-        <NavBar searchText={searchText} handelSearchText={handelSearchText} />
+        <SearchBar searchText={searchText} handelSearchText={handelSearchText} />
       </div>
       {/* <ToastContainer /> */}
       <div className='d-flex'>

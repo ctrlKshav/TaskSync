@@ -38,8 +38,9 @@ function bgcolorChange(props) {
                 : "#EAF4FC";
 }
 
-export default function Card({ task, index }) {
+export default function     Card({ task, index }) {
     return (
+        <div onDoubleClick={()=>{console.log(task)}}>
         <Draggable draggableId={`${task.id}`} key={task.id} index={index}>
             {(provided, snapshot) => (
                 <Container
@@ -48,7 +49,7 @@ export default function Card({ task, index }) {
                     ref={provided.innerRef}
                     isDragging={snapshot.isDragging}
                 >
-                    <div onClick={()=>{console.log(task)}}>
+                    <div >
                     <div style={{ display: "flex", justifyContent: "start", padding: 2 }}>
             <span>
               <small>
@@ -68,5 +69,6 @@ export default function Card({ task, index }) {
                 </Container>
             )}
         </Draggable>
+        </div>
     );
 }
