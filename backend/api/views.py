@@ -11,6 +11,11 @@ from rest_framework.decorators import api_view
 from django.db.models import Q
 from rest_framework import status
 
+from django.http import JsonResponse
+
+from google.oauth2 import id_token
+from google.auth.transport import requests
+
 # Create your views here.
 
 class CreateUserView(generics.CreateAPIView):
@@ -124,3 +129,22 @@ def task_detail(request,pk):
     elif request.method == 'DELETE':
         task.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+# def google_login(request):
+#     token = request.POST.get('token')
+#     try:
+#         idinfo = id_token.verify_oauth2_token(token, requests.Request(), "949219434705-3u7ck2qs7tagoi7knmlpd6l80t1vtg5b.apps.googleusercontent.com")
+
+#         # Extract user information (e.g., email, name, Google ID)
+#         user_google_id = idinfo['sub']
+#         email = idinfo['email']
+
+#         # Create a session or user in your app
+#         # ...
+
+#         return JsonResponse({'message': 'User authenticated successfully'})
+
+#     except ValueError:
+#         return JsonResponse({'message': 'Invalid token'}, status=400)

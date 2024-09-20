@@ -1,74 +1,73 @@
 ﻿import { useState } from "react";
-import api from '../api'
+import api from '../api';
 import { useNavigate } from "react-router-dom";
-import { ACCESS_TOKEN,REFRESH_TOKEN } from "../constants";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import LoadingIndicator from "./LoadingIndicator";
-import "../styles/Form.css"
+import "../styles/Form.css";
 
-function Form({route,method,setShouldRefetch}){
-    const [username,setUsername] = useState('')
-    const [password,setPassword] = useState('')
-    const [loading,setLoading] = useState(false)
-    const navigate=useNavigate()
+function Form({ route, method, setShouldRefetch }) {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
-    const meth=(method === 'login' ? 'Login':'Register')
+    const methodName = method === 'login' ? 'Login' : 'Register';
 
     const handleSubmit = async (e) => {
-        setLoading(true)
-        e.preventDefault()
+        setLoading(true);
+        e.preventDefault();
 
-        try{    
-            const res = await api.post(route, { username, password })
+        try {
+            const res = await api.post(route, { username, password });
             if (method === "login") {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
                 localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-                api
-                .get("/api/notes/")
-                .then((res) => {
-                    // console.log(res.data);
-                    // setNotes(res.data);
-                    setIsLoading(false);
-                })
-                .catch((err) => {
-                    console.log(err.message);
-                });
-                setShouldRefetch(prev => !prev)
-                navigate("/")
+                setShouldRefetch(prev => !prev);
+                navigate("/");
             } else {
-                navigate("/login")
+                navigate("/login");
             }
-
-        }   
-        catch(error){
-            alert(error)
+        } catch (error) {
+            alert(error.message || "An error occurred");
+        } finally {
+            setLoading(false);
         }
-        finally{
-            setLoading(false)
-        }
-    }
+    };
 
     return (
-        <form onSubmit={handleSubmit} className="form-container">
-            <h1>{meth}</h1>
-            <input
-                className="form-input"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Username"
-            />
-            <input
-                className="form-input"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-            />
-            {loading && <LoadingIndicator />}
-            <button className="form-button" type="submit">
-                {meth}
-            </button>
-        </form>
+        <div className="form-wrapper">
+            <form onSubmit={handleSubmit} className="form-container">
+                <h1 className="form-title">{methodName}</h1>
+                <div className="form-group">
+                    <label htmlFor="username" className="form-label">Username</label>
+                    <input
+                        id="username"
+                        className="form-input"
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Enter your username"
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="password" className="form-label">Password</label>
+                    <input
+                        id="password"
+                        className="form-input"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Enter your password"
+                        required
+                    />
+                </div>
+                {loading && <LoadingIndicator />}
+                <button className="form-button" type="submit" disabled={loading}>
+                    {methodName}
+                </button>
+            </form>
+        </div>
     );
 }
 

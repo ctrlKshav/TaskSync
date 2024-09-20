@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import api from "../api";
 
-const EditTaskPage = ({updateNote}) => {
+const EditTaskPage = ({updateTask}) => {
   const [title, setTitle] = useState("");
   const [id, setId] = useState("");
   const [category, setCategory] = useState("");
@@ -13,37 +13,37 @@ const EditTaskPage = ({updateNote}) => {
   const navigate = useNavigate()
   useEffect(() => {
     api
-      .get(`/api/notes/${slug}/`)
+      .get(`/api/tasks/${pk}/`)
       .then((res) => {
         // console.log(res.data);
         setTitle(res.data.title);
-        setBody(res.data.body);
+        setId(res.data.id)
         setCategory(res.data.category);
       })
       .catch((err) => {
         console.log(err.message);
       });
-  }, [slug]);
+  }, [pk]);
 
-  const updateNoteObject  = {
-    title: title,
-    body: body,
-    category: category
+  const updateTaskObject  = {
+    title,
+    id,
+    category
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    if(!title && !body && !category) return;
+    if(!title && !id && !category) return;
     
-    updateNote(updateNoteObject, slug)
-    navigate(`/notes/${slug}`)
+    updateTask(updateTaskObject, pk)
+    navigate(`/task`)
   }
 
 
   return (
     <form onSubmit={handleSubmit}>
-      <h5>Update Note</h5>
+      <h5>Update Task</h5>
       <div className="mb-3">
         <label htmlFor="exampleFormControlInput1" className="form-label">
           Title
@@ -57,23 +57,11 @@ const EditTaskPage = ({updateNote}) => {
         />
       </div>
 
-      <div className="mb-3">
-        <label htmlFor="exampleFormControlTextarea1" className="form-label">
-          Content
-        </label>
-        <textarea
-          className="form-control"
-          id="exampleFormControlTextarea1"
-          rows={4}
-          placeholder="Enter note's content"
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-        ></textarea>
-      </div>
+      
 
       <div className="mb-3">
         <label htmlFor="exampleFormControlTextarea1" className="form-label">
-          Note's category
+          Task's category
         </label>
         <select
           className="form-select"
@@ -83,9 +71,10 @@ const EditTaskPage = ({updateNote}) => {
           onChange={(e) => setCategory(e.target.value)}
         >
           <option value="">Pick a category</option>
-          <option value="BUSINESS">Business</option>
-          <option value="PERSONAL">Personal</option>
-          <option value="IMPORTANT">Important</option>
+          <option value="completed">Completed</option>
+          <option value="incomplete">Incomplete</option>
+          <option value="inreview">In Review</option>
+          <option value="backlog">Backlog</option>
         </select>
       </div>
 
@@ -93,7 +82,7 @@ const EditTaskPage = ({updateNote}) => {
         className="btn btn-primary d-flex justify-content-center"
         style={{ width: "100%" }}
       >
-        Update Note
+        Update Task
       </button>
     </form>
   );

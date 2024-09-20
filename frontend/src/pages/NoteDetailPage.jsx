@@ -2,19 +2,18 @@ import { useEffect, useState } from "react";
 import { BiSolidTrashAlt } from "react-icons/bi";
 import { FiEdit } from "react-icons/fi";
 import { Link, useParams } from "react-router-dom";
-import "./NoteDetailPage.css";
-import axios from "axios";
 import { FormatDate } from "../components/FormatDate";
 import Modal from "../components/Modal";
 import api from "../api";
+import "./NoteDetailPage.css";
 
 const NoteDetailPage = ({ deleteNote }) => {
   const [note, setNote] = useState({});
   const { slug } = useParams();
-  const [isOpen, setIsOPen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleIsOpen = () => {
-    setIsOPen(!isOpen);
+    setIsOpen(!isOpen);
   };
 
   useEffect(() => {
@@ -22,39 +21,36 @@ const NoteDetailPage = ({ deleteNote }) => {
       .get(`/api/notes/${slug}/`)
       .then((res) => {
         setNote(res.data);
-        console.log(res.data);
       })
       .catch((err) => {
-        console.log(err.message);
+        console.error(err.message);
       });
   }, [slug]);
 
   return (
-    <>
-      <div className="note-container">
-        <h3 className="title">{note.title}</h3>
-        <span className="d-flex justify-content-center">
-          <p className="note-date font-12 text-muted me-5">
-            {" "}
-            created: {FormatDate(note.created)}
+    <div className="container mt-4">
+      <div className="note-container bg-white p-4 rounded shadow-sm">
+        <h3 className="title mb-3">{note.title}</h3>
+        <div className="d-flex justify-content-between mb-3">
+          <p className="note-date text-muted mb-0">
+            Created: {FormatDate(note.created)}
           </p>
-          <p className="note-date font-12 text-muted me-5">
-            last updated: {FormatDate(note.updated)}
+          <p className="note-date text-muted mb-0">
+            Last Updated: {FormatDate(note.updated)}
           </p>
-        </span>
-        <span className="button-group">
-          <Link to={`/edit-note/${slug}`}>
-            <button className="btn btn-primary">
-              <FiEdit />
-              <span>Edit</span>
+        </div>
+        <div className="d-flex justify-content-between mb-3">
+          <Link to={`/edit-note/${slug}`} >
+            <button className="btn btn-primary d-flex align-items-center">
+              <FiEdit className="me-2" />
+              Edit
             </button>
           </Link>
-
-          <button className="btn btn-danger" onClick={handleIsOpen}>
-            <BiSolidTrashAlt />
-            <span>Delete</span>
+          <button className="btn btn-danger d-flex align-items-center" onClick={handleIsOpen}>
+            <BiSolidTrashAlt className="me-2" />
+            Delete
           </button>
-        </span>
+        </div>
         <p className="description">{note.body}</p>
       </div>
 
@@ -64,7 +60,7 @@ const NoteDetailPage = ({ deleteNote }) => {
           deleteNote={() => deleteNote(slug)}
         />
       )}
-    </>
+    </div>
   );
 };
 

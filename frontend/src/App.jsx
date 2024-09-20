@@ -23,6 +23,10 @@ import Sidebar from "./components/Sidebar"
 
 import Tasks from "./pages/Tasks"
 import AddTaskPage from "./pages/AddTaskPage"
+import TaskDetailPage from './pages/TaskDetailPage'
+import EditTaskPage from './pages/EditTaskPage'
+
+import Calendar from "./pages/Calendar"
 
 function Logout(){
   localStorage.clear()
@@ -115,6 +119,18 @@ function App() {
       .catch((err) => console.log(err.message));
   };
 
+  const updateTask = (data, pk) => {
+    api
+      .put(`/api/tasks/${pk}/`, data)
+      .then((res) => {
+        console.log(res.data);
+        toast.success("Task updated succesfully");
+        setTaskRefetch(prev=>!prev)
+      })
+
+      .catch((err) => console.log(err.message));
+  };
+
   const deleteNote = (slug) => {
     api
       .delete(`/api/notes/${slug}/`)
@@ -139,6 +155,13 @@ function App() {
       });
 
   }
+
+  const deleteTask = (pk) => {
+    api
+      .delete(`/api/tasks/${pk}/`)
+      .then(()=>(console.log("Deleted")))
+      .catch((err) => console.log(err.message));
+  };
 
 
 
@@ -174,7 +197,7 @@ const router = createBrowserRouter(
       <Route path="/add-note" element={<AddNotePage addNote={addNote} />} />
       <Route
         path="/edit-note/:slug"
-        element={<EditNotePage updateNote={updateNote} />}
+        element={<EditNotePage updateNote={updateNote}  />}
       />
       <Route
         path="/notes/:slug"
@@ -188,8 +211,14 @@ const router = createBrowserRouter(
 
      <Route path="/task" element={<Tasks taskRefetch={taskRefetch}/>} />
      <Route path="/add-task" element = {<AddTaskPage addTask={addTask}/>} />
-     {/* <Route path='/tasks/:pk' element={}/> */}
-     
+     <Route path='/tasks/:pk' element={<TaskDetailPage deleteTask={deleteTask}/>}/>
+     <Route
+        path="/edit-task/:pk"
+        element={<EditTaskPage updateTask={updateTask}  />}
+      />
+
+      <Route path="/calendar" element={<Calendar />} />
+
      <Route path="*" element={<NotFound />}/>
     
 

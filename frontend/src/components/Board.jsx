@@ -58,7 +58,7 @@ export default function Board({taskRefetch}) {
         let updatedTask={id:data.id,title:data.title,category:data.category}
         // console.log(updatedTask)
         api
-            .put(`/api/tasks/update/${pk}/`,updatedTask)
+            .put(`/api/tasks/${pk}/`,updatedTask)
             .then(()=>{getTasks()})
             .catch((err)=>console.log(err))
 

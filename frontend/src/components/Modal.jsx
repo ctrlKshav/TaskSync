@@ -18,7 +18,7 @@ const Modal = ({handleIsOpen, deleteNote}) => {
         <button className="close-button" onClick={handleIsOpen}>×</button>
         <div className="c-modal-content">
           <h2>Delete Note</h2>
-          <p>Are you you want to Delete this note?</p>
+          <p>Are you you want to Delete?</p>
           <span className="d-flex justify-content-center">
             <button className="btn btn-danger me-3" onClick={handleDeleteNote}>Delete</button>
             <button className="btn btn-primary" onClick={handleIsOpen}>Cancel</button>

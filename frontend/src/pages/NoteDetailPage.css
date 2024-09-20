@@ -1,4 +1,4 @@
-/* DetailPage.css */
+/* DetailPage.css
 
 .note-container {
     max-width: 800px;
@@ -49,9 +49,9 @@
   }
   
   .description {
-    /* font-family: 'Georgia', serif; */
-    /* color: #555; */
+    font-family: 'Georgia', serif;
+    color: #555;
     line-height: 1.6;
     text-align: justify;
   }
-  
+   */

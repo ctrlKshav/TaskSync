@@ -1,32 +1,32 @@
-﻿import React from 'react'
+﻿import React from 'react';
 import { FaSquarePlus } from "react-icons/fa6";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
-const NavBar = () => {
+const NavBar = (props) => {
+  console.log(props)
+
   return (
-    <nav className="navbar bg-body-tertiary py-50" style={{ padding: "20px" }}>
-      <div className="container d-flex justify-content-space-between">
-        <Link className="navbar-brand " to="/">
-          <h4 style={{ fontWeight: "bold" }} >TaskSync</h4>
+    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+      <div className="container">
+        {/* Brand */}
+        <Link className="navbar-brand" to="/">
+          <h4 className="mb-0" style={{ fontWeight: "bold" }}>TaskSync</h4>
         </Link>
-       
 
-       <div>
-        <h2>Progress Board</h2>
-       </div>
+        {/* Title */}
+        <div className="d-flex flex-grow-1 justify-content-center">
+          <h2 className="mb-0">{props.props.title}</h2>
+        </div>
 
-        <Link to="/add-task"  style={{ textDecoration: "none" }}>
-        <button
-            className="btn btn-outline-primary btn-md"
-            type="button"
-           
-          >
-            <FaSquarePlus className="me-2 fs-6" /> Add Task
-          </button>
-        </Link>
+        {/* Button */}
+        {props.props.bool?<Link to='/add-task' className="btn btn-primary">
+          <FaSquarePlus className="me-2" />
+          Add Task
+        </Link>:<></>}
+        
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default NavBar
+export default NavBar;

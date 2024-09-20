@@ -5,7 +5,7 @@ import NavBar from "../components/NavBar";
 const Tasks = ({taskRefetch}) => {
     return(
     <div className="d-flex flex-column">
-        <NavBar></NavBar>
+        <NavBar props={{'title':"Progress Board","bool":true}}></NavBar>
         <div className="d-flex">
             <Sidebar></Sidebar>
             <Board taskRefetch={taskRefetch}></Board>
