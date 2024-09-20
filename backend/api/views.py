@@ -11,10 +11,7 @@ from rest_framework.decorators import api_view
 from django.db.models import Q
 from rest_framework import status
 
-from django.http import JsonResponse
 
-from google.oauth2 import id_token
-from google.auth.transport import requests
 
 # Create your views here.
 
