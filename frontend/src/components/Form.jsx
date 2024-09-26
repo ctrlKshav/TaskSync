@@ -34,6 +34,32 @@ function Form({ route, method, setShouldRefetch }) {
         }
     };
 
+   function loginOrRegister(){
+        if(methodName === 'Login'){
+            return (
+                <div className="d-flex flex-column align-items-center gap-2 mt-3">
+                    New User?
+                    <button className="btn btn-link btn-sm btn-outline-dark bg-light" disabled={loading} onClick={()=>navigate("/register")}>
+                        Register
+                    </button>
+                </div>
+            )
+
+        }
+        else if(methodName === 'Register'){
+            return (
+                <div className="d-flex flex-column align-items-center gap-2 mt-3">
+                    <div>Already have an account?</div> 
+                    <button className="btn btn-link btn-sm btn-outline-dark bg-light" disabled={loading} onClick={()=>navigate("/login")}>
+                        Login
+                    </button>
+                </div>
+            )
+
+        }
+            
+    }
+
     return (
         <div className="form-wrapper">
             <form onSubmit={handleSubmit} className="form-container">
@@ -66,6 +92,12 @@ function Form({ route, method, setShouldRefetch }) {
                 <button className="form-button" type="submit" disabled={loading}>
                     {methodName}
                 </button>
+
+                <div>
+                    {loginOrRegister()}
+                </div>
+                
+
             </form>
         </div>
     );
