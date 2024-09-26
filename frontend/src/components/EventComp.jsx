@@ -3,8 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import CalendarEvents from './CalendarEvents';
 
 const EventComp = () => {
-  const CLIENT_ID = '949219434705-3u7ck2qs7tagoi7knmlpd6l80t1vtg5b.apps.googleusercontent.com';
-  const API_KEY = 'AIzaSyA2HQx8rTtz_p4E-YXV3GrSj8HRyhONng8';
+  // const CLIENT_ID = '949219434705-3u7ck2qs7tagoi7knmlpd6l80t1vtg5b.apps.googleusercontent.com';
+  // const API_KEY = 'AIzaSyA2HQx8rTtz_p4E-YXV3GrSj8HRyhONng8';
+  const CLIENT_ID = os.environ.get("CLIENT_ID")
+  const API_KEY = os.environ.get("API_KEY")
   const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
   const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
 
