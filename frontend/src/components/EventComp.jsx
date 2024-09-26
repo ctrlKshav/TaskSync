@@ -3,10 +3,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import CalendarEvents from './CalendarEvents';
 
 const EventComp = () => {
-
-  const CLIENT_ID = os.environ.get("CLIENT_ID")
-  const API_KEY = os.environ.get("API_KEY")
   
+  const CLIENT_ID = process.env.CLIENT_ID
+  const API_KEY = process.env.API_KEY
   const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
   const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
 
