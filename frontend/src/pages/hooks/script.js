@@ -1,4 +1,4 @@
-﻿import 'dotenv/config'
+﻿
       /* exported gapiLoaded */
       /* exported gisLoaded */
       /* exported handleAuthClick */

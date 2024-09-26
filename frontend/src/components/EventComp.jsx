@@ -1,7 +1,7 @@
 ﻿import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CalendarEvents from './CalendarEvents';
-import 'dotenv/config'
+
 
 const EventComp = () => {
   
