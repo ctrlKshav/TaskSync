@@ -5,10 +5,8 @@ import CalendarEvents from './CalendarEvents';
 
 const EventComp = () => {
   
-  const CLIENT_ID = import.meta.env.CLIENT_ID
-  console.log(CLIENT_ID)
-  const API_KEY = import.meta.env.API_KEY
-  console.log(API_KEY)
+  const CLIENT_ID = import.meta.env.VITE_CLIENT_ID
+  const API_KEY = import.meta.env.VITE_API_KEY
   const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
   const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
 
