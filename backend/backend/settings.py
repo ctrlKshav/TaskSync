@@ -119,6 +119,7 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # }
 
 database_url=os.environ.get("DATABASE_URL")
+
 # #New render stuff
 DATABASES = {
     # Replace this value with your local database's connection string.   

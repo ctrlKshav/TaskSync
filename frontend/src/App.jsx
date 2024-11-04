@@ -14,12 +14,9 @@ import EditNotePage from "./pages/EditNotePage";
 import HomePage from "./pages/HomePage";
 import NoteDetailPage from "./pages/NoteDetailPage";
 
-import Board from "./components/Board"
 
-import axios from "axios";
 import { toast } from "react-toastify";
 import api from "./api"
-import Sidebar from "./components/Sidebar"
 
 import Tasks from "./pages/Tasks"
 import AddTaskPage from "./pages/AddTaskPage"

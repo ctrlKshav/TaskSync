@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { DragDropContext } from "@hello-pangea/dnd";
 import Column from "./Column";
 import api from '../api'
-import { createGlobalStyle } from "styled-components";
 export default function Board({taskRefetch}) {
     const [completed, setCompleted] = useState([]);
     const [incomplete, setIncomplete] = useState([]);
@@ -120,35 +119,7 @@ export default function Board({taskRefetch}) {
         }
 
     }
-    function setNewState(destinationDroppableId, task) {
-        let updatedTask;
-        switch (destinationDroppableId) {
-            case "1":   // TO DO
-                task.category = "incomplete"
-                // updatedTask = { ...task, completed: false };
-                // setIncomplete([updatedTask, ...incomplete]);
-                break;
-            case "2":  // DONE
-                task.category = "completed"
-
-                // updatedTask = { ...task, completed: true };
-                // setCompleted([updatedTask, ...completed]);
-                break;
-            case "3":  // IN REVIEW
-                task.category = "inreview"
-
-                // updatedTask = { ...task, completed: false };
-                // setInReview([updatedTask, ...inReview]);
-                break;
-            case "4":  // BACKLOG
-                task.category = "backlog"
-
-                // updatedTask = { ...task, completed: false };
-                // setBacklog([updatedTask, ...backlog]);
-                break;
-            getTasks()
-        }
-    }
+    
     function findItemById(id, array) {
         return array.find((item) => item.id == id);
     }
