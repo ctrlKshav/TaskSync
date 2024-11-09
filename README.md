@@ -6,6 +6,7 @@ TaskSync is a web application designed to help users keep track of their notes, 
 ## Features
 - Perform CRUD Operations on Notes with search and tags functionality.
 - Kanban Board with Drag and Drop Functionality for Task Management.
+- Keep a track of all your upcoming Google Calendar Events at one place.
 - Clean and User-Friendly Interface.
 
 ## Technologies Used
