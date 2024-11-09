@@ -172,11 +172,13 @@ const router = createBrowserRouter(
     <Route
       path="/"
       element={
+        <ProtectedRoute>
         <MainLayout
           searchText={searchText}
           handelSearchText={handelSearchText}
             
         />
+          </ProtectedRoute>
       }
     >
       <Route
